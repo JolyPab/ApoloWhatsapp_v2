@@ -6,8 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: <ApoloWhatsapp>        # имя твоего App Service
-  AZURE_WEBAPP_PACKAGE_PATH: .         # деплоим исходники из корня
+  AZURE_WEBAPP_PACKAGE_PATH: .   # деплоим весь репозиторий
 
 jobs:
   build-and-deploy:
@@ -21,7 +20,7 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
+      - name: (Optional) Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
@@ -29,6 +28,5 @@ jobs:
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
