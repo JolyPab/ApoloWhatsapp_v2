@@ -17,9 +17,15 @@ _emb_client = AzureOpenAI(
 
 def classify_intent(user_text: str) -> dict:
     prompt = [
-        {"role":"system","content": "Eres un asistente para una inmobiliaria. Clasifica el mensaje del usuario en: 'venta', 'renta', 'visita', 'consulta', 'desconocido'. Devuelve JSON: {\\"intent\\": str, \\"zona\\": str|null, \\"presupuesto\\": float|null, \\"link\\": str|null}"},
-        {"role":"user","content": user_text},
+        {
+            "role": "system",
+            "content": '''Eres un asistente para una inmobiliaria.
+Clasifica el mensaje del usuario en: 'venta', 'renta', 'visita', 'consulta', 'desconocido'.
+Devuelve JSON: {"intent": str, "zona": str|null, "presupuesto": float|null, "link": str|null}'''
+        },
+        {"role": "user", "content": user_text},
     ]
+
     resp = _chat_client.chat.completions.create(
         model=settings.AZURE_OPENAI_CHAT_DEPLOYMENT,
         messages=prompt,
